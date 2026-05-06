@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh" data-lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Choose Your Own Contact (Microphone)</title>
+<meta name="description" content="DIY 接触式麦克风工作坊 / DIY contact microphone workshop" />
+<style>
+  :root {
+    --bg: #fafaf7;
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #c0392b;
+    --rule: #e5e3dc;
+    --card: #ffffff;
+    --code-bg: #f3f1ea;
+    --max-w: 720px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111111;
+      --fg: #ececec;
+      --muted: #9a9a9a;
+      --accent: #ff8a75;
+      --rule: #2a2a2a;
+      --card: #1a1a1a;
+      --code-bg: #1f1f1f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.7;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+  header.site {
+    border-bottom: 1px solid var(--rule);
+    padding: 18px 0 16px;
+    margin-bottom: 40px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+    backdrop-filter: blur(6px);
+  }
+  header.site .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  header.site .brand {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+  }
+  header.site .brand .dot { color: var(--accent); }
+  .lang-toggle {
+    display: inline-flex;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  .lang-toggle button {
+    background: transparent;
+    border: 0;
+    padding: 6px 14px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .lang-toggle button.active {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  h1 {
+    font-size: 38px;
+    line-height: 1.2;
+    margin: 32px 0 8px;
+    letter-spacing: -0.01em;
+  }
+  h1 .sub {
+    display: block;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 8px;
+    letter-spacing: 0;
+  }
+  h2 {
+    font-size: 22px;
+    margin: 56px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  h3 {
+    font-size: 17px;
+    margin: 32px 0 8px;
+    color: var(--accent);
+  }
+  p { margin: 0 0 16px; }
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin-bottom: 6px; }
+  code {
+    background: var(--code-bg);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 15px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+  th {
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .lede {
+    font-size: 19px;
+    color: var(--muted);
+    line-height: 1.6;
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 18px;
+    margin: 24px 0 40px;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .meta span { white-space: nowrap; }
+  .pill {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: var(--code-bg);
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .path-card {
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    background: var(--card);
+  }
+  .path-card h4 {
+    margin: 0 0 6px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .path-card .swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .path-card .meta-line {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .path-card p { margin: 0; font-size: 15px; }
+  .green  { background: #2ecc71; }
+  .yellow { background: #f1c40f; }
+  .blue   { background: #3498db; }
+
+  .nav-strip {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+  }
+  .nav-strip a {
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--muted);
+  }
+  .nav-strip a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .doc-links {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .doc-links a { margin-right: 16px; }
+
+  footer {
+    margin-top: 80px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* language visibility */
+  body[data-lang="zh"] .en { display: none; }
+  body[data-lang="en"] .zh { display: none; }
+
+  @media (max-width: 540px) {
+    h1 { font-size: 30px; }
+    .lede { font-size: 17px; }
+    body { font-size: 16px; }
+    table { font-size: 14px; }
+    th, td { padding: 8px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="row">
+      <div class="brand">
+        <span class="dot">●</span>
+        <span class="zh"> 选择你的接触式（麦克风）</span>
+        <span class="en"> Choose Your Own Contact (Microphone)</span>
+      </div>
+      <div class="lang-toggle" role="tablist" aria-label="Language">
+        <button data-set="zh" class="active" type="button">中文</button>
+        <button data-set="en" type="button">EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ========== 中文 ========== -->
+<section class="zh">
+
+  <h1>选择你的接触式（麦克风）<span class="sub">DIY 物体聆听工作坊</span></h1>
+
+  <div class="meta">
+    <span><span class="pill">时长</span> 一个下午 · 约 4 小时</span>
+    <span><span class="pill">人数</span> 10–15 人</span>
+    <span><span class="pill">门槛</span> 无需基础</span>
+  </div>
+
+  <p class="lede">
+    一个下午，做一只属于自己的接触式麦克风，然后用它把世界的另一面听给彼此。
+  </p>
+
+  <nav class="nav-strip">
+    <a href="#idea">理念</a>
+    <a href="#do">我们会做什么</a>
+    <a href="#paths">三条路径</a>
+    <a href="#prompts">录音任务</a>
+    <a href="#take">你会带走什么</a>
+    <a href="#provide">材料 / 你需要带</a>
+    <a href="#info">实务</a>
+  </nav>
+
+  <h2 id="idea">工作坊理念</h2>
+  <p>
+    我们日常听到的声音，几乎都是空气中的振动。但所有物体——金属、木头、玻璃、皮肤、植物、墙壁——其实都在以自己的方式振动着，只是这些振动太微弱，或者频率不在我们耳朵习惯的范围里。<strong>接触��麦克风（Contact Microphone）</strong> 就是一种贴在物体表面、直接拾取固体振动的传感器。它让我们可以"听见"那些原本被空气过滤掉的声音：暖气管里的水流、桌面下的低频共振、一片叶子被风吹动的细节、自己骨骼里的声音。
+  </p>
+  <p>
+    这个工作坊不是关于"做一个工具"，而是关于<strong>用自己做的工具，重新听一次世界</strong>。我们提供材料、电路、和参考路径，但每个人最终做出的麦克风、录到的声音、想要分享的内容，都属于参与者自己。我们鼓励"自由选择"——不是放任，而是给出三条清晰的路径，让你按自己的节奏和兴趣走下去。
+  </p>
+  <p>工作坊的最后，我们会一起在一个安静的房间里，听每个人录下的 60 秒。</p>
+
+  <h2 id="do">我们会一起做什么</h2>
+
+  <h3>1 · 听：参考作品与概念铺垫（约 25 分钟）</h3>
+  <p>开场会先放一组接触式麦克风的代表录音作品：</p>
+  <ul>
+    <li><strong>Chris Watson</strong> 自然录音中对结构性振动的运用</li>
+    <li><strong>Jacob Kirkegaard</strong> 在切尔诺贝利废墟里录到的"空房间"</li>
+    <li><strong>Christina Kubisch</strong> 的电磁聆听漫步</li>
+    <li><strong>Gladys Hydrophone</strong> 等业余制作传统</li>
+  </ul>
+  <p>听完这些，再做一个现场 A/B/C 演示——三种电路路径下同一个 piezo 听到的声音差异，<strong>这三段对比浓缩了接触式麦克风从业余到专业的完整工程谱系</strong>。</p>
+
+  <h3>2 · 学：电路原理（约 20 分钟）</h3>
+  <p>不需要电子工程背景。我们会用最直白的语言解释：</p>
+  <ul>
+    <li>piezo 是怎么"发电"的（压电效应）</li>
+    <li>为什么直接接设备会"丢低频"（高阻抗源 vs 低阻抗负载）</li>
+    <li>JFET buffer 怎么解决这个问题</li>
+    <li>PiP 与 P48 各自适用什么场景</li>
+    <li>为什么 PiP 用一根线就能同时走信号和供电</li>
+  </ul>
+
+  <h3>3 · 做：三条路径任选（约 60 分钟）</h3>
+  <p><strong>所有人先完成基础款</strong>，保证每个人下午结束时都带走一只能工作的麦克风。然后根据时间和兴趣继续。</p>
+
+  <div id="paths">
+    <div class="path-card">
+      <h4><span class="swatch green"></span> 基础款</h4>
+      <div class="meta-line">3.5mm TRS · 裸 piezo · 焊 3 个点 · 20–30 分钟</div>
+      <p>直接连手机、iRig 或相机即可使用。简单，但已经能听见很多东西。</p>
+    </div>
+    <div class="path-card">
+      <h4><span class="swatch yellow"></span> PiP 款</h4>
+      <div class="meta-line">3.5mm TRS · piezo + JFET buffer · 焊 1 块小板 · 45–60 分钟</div>
+      <p>低频回来了。接 iRig、Zoom 录音机、相机（开 PiP），声音质量上一个台阶。</p>
+    </div>
+    <div class="path-card">
+      <h4><span class="swatch blue"></span> P48 款</h4>
+      <div class="meta-line">XLR · piezo + 平衡前级 · 60–75 分钟</div>
+      <p>专业级链路。接调音台或带 P48 的便携录音机，长线传输不衰减。</p>
+    </div>
+  </div>
+
+  <p><strong>外壳</strong>：我们提供 3D 打印的统一外壳，预留扩展腔可以容纳进阶电路板。<br />
+  <strong>封装</strong>：用 5 分钟快干环氧树脂直接灌进外壳里。3D 打印外壳本身就是模具，不脱模。工作坊结束就能拿走（完全固化要回家放一晚）。</p>
+
+  <h3 id="prompts">4 · 录：现场 + 外出录音（约 60 分钟）</h3>
+  <p>我们提供三个录音任务，三选一（不限于此，但任务可以在你不知道录什么的时候帮你起步）：</p>
+  <ul>
+    <li><strong>A. 三种材质</strong>：金属的、木质的、活的（身体 / 植物 / 水），各 20 秒</li>
+    <li><strong>B. 一个空��的三个尺度</strong>：墙、家具、小物件</li>
+    <li><strong>C. 一个不可见的振动</strong>：冰箱、水管、地板、窗户共振</li>
+  </ul>
+  <p>录音设备：iRig + 手机、Zoom 录音机、调音台（看你做的是哪一款），都在现场。</p>
+
+  <h3>5 · 分享：集体聆听会（约 30 分钟）</h3>
+  <p>关灯，好音箱，每人 60 秒。听完之后简短地说一下你录的是什么、为什么选它。</p>
+
+  <h2 id="take">你会带走什么</h2>
+  <ul>
+    <li>一只你自己做的接触式麦克风</li>
+    <li>一段属于你自己的、被这只麦克风改变了感知的录音</li>
+    <li>对"声音从哪里来、被什么塑造、被什么过滤"的具体理解</li>
+    <li>一份基础电路知识（你下次想自己改电路、加效果，已经有起点了）</li>
+  </ul>
+
+  <h2 id="provide">我们提供什么 / 你需要带什么</h2>
+  <p><strong>我们提供</strong>：piezo（20mm / 27mm / 35mm 三种）、JFET buffer 板、P48 平衡前级板、3.5mm TRS 与 XLR 接头、屏蔽线、3D 打印外壳、5min 环氧、焊台、iRig、Zoom 录音机、小调音台、监听耳机和音箱。</p>
+  <p><strong>你需要带</strong>：你的手机或笔记本（用来听 / 存录音）、一个充满好奇的耳朵。如果你有自己常��的录音机或便携设备，欢迎带来。</p>
+
+  <h2 id="info">实务信息</h2>
+  <ul>
+    <li><strong>时长</strong>：一个下午，约 4 小时</li>
+    <li><strong>人数</strong>：10–15 人</li>
+    <li><strong>背景要求</strong>：无。声音艺术 / 电子基础有帮助但不必要</li>
+    <li><strong>安全提示</strong>：焊台是热的；<strong>不要把 PiP 麦插到 P48 接口</strong>（会烧 JFET）；P48 设备要先接线再开电、先关电再拔线</li>
+  </ul>
+
+</section>
+
+<!-- ========== English ========== -->
+<section class="en">
+
+  <h1>Choose Your Own Contact (Microphone)<span class="sub">A DIY workshop for listening to objects</span></h1>
+
+  <div class="meta">
+    <span><span class="pill">Duration</span> one afternoon · ~4 hrs</span>
+    <span><span class="pill">Capacity</span> 10–15</span>
+    <span><span class="pill">Prerequisites</span> none</span>
+  </div>
+
+  <p class="lede">
+    Spend an afternoon building your own contact microphone, then use it to listen to the other side of the world together.
+  </p>
+
+  <nav class="nav-strip">
+    <a href="#idea-en">Philosophy</a>
+    <a href="#do-en">What we'll do</a>
+    <a href="#paths-en">Three paths</a>
+    <a href="#prompts-en">Recording prompts</a>
+    <a href="#take-en">What you take home</a>
+    <a href="#provide-en">Materials</a>
+    <a href="#info-en">Practical</a>
+  </nav>
+
+  <h2 id="idea-en">Workshop Philosophy</h2>
+  <p>
+    Most of what we hear arrives as vibration in the air. But every object — metal, wood, glass, skin, plants, walls — vibrates in its own way. These vibrations are usually too quiet, or sit at frequencies our ears have learned to ignore. A <strong>contact microphone</strong> is a sensor that sticks to a surface and picks up vibration directly through solids. It lets us hear what the air filters out: water moving through a heating pipe, the low rumble under a table, the detail of a leaf in wind, the sound of our own bones.
+  </p>
+  <p>
+    This workshop is not about building a tool. It's about <strong>using a tool you built to listen to the world again</strong>. We provide the materials, the circuits, and reference paths, but the microphone you end up with, the sounds you record, and what you choose to share — those belong to you. We encourage "free choice," not as anything-goes, but as three clear paths you can take at your own pace.
+  </p>
+  <p>At the end of the afternoon, we sit together in a quiet room and listen to 60 seconds from each person.</p>
+
+  <h2 id="do-en">What We'll Do Together</h2>
+
+  <h3>1 · Listen — Reference works and conceptual grounding (~25 min)</h3>
+  <p>We'll begin with a small set of recordings that have shaped contact-mic practice:</p>
+  <ul>
+    <li><strong>Chris Watson</strong>'s use of structural vibration in field recording</li>
+    <li><strong>Jacob Kirkegaard</strong>'s recordings of "empty rooms" in Chernobyl</li>
+    <li><strong>Christina Kubisch</strong>'s electromagnetic listening walks</li>
+    <li>The amateur tradition (e.g. Gladys Hydrophone)</li>
+  </ul>
+  <p>Then a live A/B/C demonstration of three circuit paths against the same piezo. <strong>These three comparisons compress the entire engineering history of contact microphones, from amateur to professional.</strong></p>
+
+  <h3>2 · Learn — Circuit principles (~20 min)</h3>
+  <p>No electronics background required. In plain language:</p>
+  <ul>
+    <li>How a piezo "generates" voltage (the piezoelectric effect)</li>
+    <li>Why plugging it directly into a device drops the low end</li>
+    <li>How a JFET buffer fixes this</li>
+    <li>What PiP and P48 are, and when each applies</li>
+    <li>Why PiP can carry signal and power on a single wire</li>
+  </ul>
+
+  <h3>3 · Build — Pick one of three paths (~60 min)</h3>
+  <p><strong>Everyone completes the basic version first</strong> so no one leaves empty-handed. From there you can keep going based on time and curiosity.</p>
+
+  <div id="paths-en">
+    <div class="path-card">
+      <h4><span class="swatch green"></span> Basic</h4>
+      <div class="meta-line">3.5mm TRS · bare piezo · 3 solder joints · 20–30 min</div>
+      <p>Plug straight into a phone, iRig, or camera. Simple, but already enough to hear a lot.</p>
+    </div>
+    <div class="path-card">
+      <h4><span class="swatch yellow"></span> PiP</h4>
+      <div class="meta-line">3.5mm TRS · piezo + JFET buffer · 1 small board · 45–60 min</div>
+      <p>The low end comes back. Plug into iRig, Zoom recorders, or a camera with PiP enabled.</p>
+    </div>
+    <div class="path-card">
+      <h4><span class="swatch blue"></span> P48</h4>
+      <div class="meta-line">XLR · piezo + balanced preamp · 60–75 min</div>
+      <p>Professional path. Plug into a mixer or portable recorder with phantom power; long cable runs without loss.</p>
+    </div>
+  </div>
+
+  <p><strong>Enclosure</strong>: a unified 3D-printed shell with a chamber for optional boards.<br />
+  <strong>Potting</strong>: 5-minute epoxy poured directly into the shell. The shell is the mold — no demolding. You can carry the mic out at the end (full cure happens overnight at home).</p>
+
+  <h3 id="prompts-en">4 · Record — On-site and short walks (~60 min)</h3>
+  <p>Three optional recording prompts (you can ignore them, but they're there if you don't know where to start):</p>
+  <ul>
+    <li><strong>A. Three materials</strong>: metal, wood, something alive (your body, a plant, water) — 20 seconds each</li>
+    <li><strong>B. A space at three scales</strong>: a wall, a piece of furniture, a small object</li>
+    <li><strong>C. An invisible vibration</strong>: fridge, water pipe, floor, window resonance</li>
+  </ul>
+  <p>Equipment on-site: iRig + your phone, Zoom recorders, a small mixer — depending on which build you chose.</p>
+
+  <h3>5 · Share — Collective listening session (~30 min)</h3>
+  <p>Lights down, decent speakers, 60 seconds per person. A short word from each on what you recorded and why.</p>
+
+  <h2 id="take-en">What You'll Take Home</h2>
+  <ul>
+    <li>A contact microphone you made yourself</li>
+    <li>A recording made through a sensor that changed how you hear</li>
+    <li>A concrete understanding of where sound comes from, what shapes it, what filters it out</li>
+    <li>A working baseline of circuit knowledge — enough to keep modifying or extending the mic on your own</li>
+  </ul>
+
+  <h2 id="provide-en">What We Provide / What to Bring</h2>
+  <p><strong>We provide</strong>: piezo discs (20mm / 27mm / 35mm), JFET buffer boards, P48 balanced preamp boards, 3.5mm TRS and XLR connectors, shielded cable, 3D-printed enclosures, 5-minute epoxy, soldering stations, iRig, Zoom recorders, a small mixer, monitor headphones and speakers.</p>
+  <p><strong>You bring</strong>: your phone or laptop (for listening and storing recordings), and curious ears. If you have your own recorder or portable rig, bring it.</p>
+
+  <h2 id="info-en">Practical Info</h2>
+  <ul>
+    <li><strong>Duration</strong>: one afternoon, ~4 hours</li>
+    <li><strong>Capacity</strong>: 10–15 people</li>
+    <li><strong>Prerequisites</strong>: none. Background in sound art or electronics helps but isn't required</li>
+    <li><strong>Safety</strong>: soldering irons are hot; <strong>never plug a PiP mic into a P48 input</strong> (it will fry the JFET); for P48 devices, connect cables before powering on, and power off before disconnecting</li>
+  </ul>
+
+</section>
+
+<div class="doc-links">
+  <span class="zh">技术文档：</span>
+  <span class="en">Workshop docs:</span>
+  <a href="workshop-plan.md">Workshop Plan</a>
+  <a href="bom.md">BOM</a>
+  <a href="enclosure-design.md">Enclosure Design</a>
+  <a href="cheat-sheet.md">Cheat Sheet</a>
+</div>
+
+<footer>
+  <p>
+    <span class="zh">由参与者与讲师共同维护 · 源代码在 </span>
+    <span class="en">Maintained by participants and organizers · Source on </span>
+    <a href="https://github.com/zmk5566/choose-your-own-contact">GitHub</a>
+  </p>
+</footer>
+
+</main>
+
+<script>
+  const body = document.body;
+  const buttons = document.querySelectorAll('.lang-toggle button');
+  function setLang(l) {
+    body.setAttribute('data-lang', l);
+    document.documentElement.setAttribute('lang', l);
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.set === l));
+    try { localStorage.setItem('cyoc-lang', l); } catch (e) {}
+  }
+  buttons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.set)));
+  try {
+    const saved = localStorage.getItem('cyoc-lang');
+    if (saved) setLang(saved);
+    else if ((navigator.language || '').toLowerCase().startsWith('en')) setLang('en');
+  } catch (e) {}
+</script>
+
+</body>
+</html>
