@@ -1,5 +1,5 @@
 # Choose Your Own Contact (Microphone)
-## 选择你的接触式（麦克风）：DIY 物体聆听工作坊
+## 选择你的接触式（麦克风）：声音中的近距离接触 DIY 工作坊
 
 ---
 
