@@ -218,6 +218,116 @@
   }
   .nav-strip a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
+  .signup-button,
+  .signup-actions button {
+    border: 1px solid var(--fg);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .signup-button,
+  .signup-actions button[type="submit"] {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .signup-actions button[type="button"],
+  .signup-close {
+    background: transparent;
+    color: var(--fg);
+  }
+  .signup-dialog {
+    width: min(420px, calc(100vw - 32px));
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 0;
+    background: var(--card);
+    color: var(--fg);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+  }
+  .signup-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.35);
+  }
+  .signup-form {
+    padding: 18px;
+  }
+  .signup-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .signup-head h2 {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 19px;
+  }
+  .signup-close {
+    border: 0;
+    font-size: 22px;
+    line-height: 1;
+    padding: 2px 4px;
+    cursor: pointer;
+  }
+  .signup-field,
+  .signup-options {
+    display: grid;
+    gap: 8px;
+    margin: 0 0 16px;
+  }
+  .signup-field label,
+  .signup-options legend {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .signup-field input[type="text"] {
+    width: 100%;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 10px 12px;
+    background: var(--bg);
+    color: var(--fg);
+    font: inherit;
+  }
+  .signup-options {
+    border: 0;
+    padding: 0;
+  }
+  .signup-radio-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .signup-radio-row label {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+  .signup-radio-row input {
+    margin-right: 6px;
+  }
+  .signup-status {
+    min-height: 22px;
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .signup-status.error {
+    color: var(--accent);
+  }
+  .signup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  .honeypot {
+    display: none;
+  }
+
   footer {
     margin-top: 80px;
     padding-top: 20px;
@@ -253,6 +363,7 @@
 </header>
 
 <main class="wrap" id="app"></main>
+<dialog class="signup-dialog" id="signup-dialog"></dialog>
 
 <script>
   const content = {
@@ -267,6 +378,57 @@
     description: {
       zh: "DIY 接触式麦克风工作坊",
       en: "DIY contact microphone workshop"
+    },
+    signup: {
+      apiUrl: "https://form-collection.cragvision.com/signup",
+      openLabel: {
+        zh: "报名",
+        en: "Sign up"
+      },
+      title: {
+        zh: "报名",
+        en: "Sign up"
+      },
+      nameLabel: {
+        zh: "名字",
+        en: "Name"
+      },
+      recordingLabel: {
+        zh: "你有录音机吗？",
+        en: "Do you have a recorder?"
+      },
+      yesLabel: {
+        zh: "有",
+        en: "Yes"
+      },
+      noLabel: {
+        zh: "没有",
+        en: "No"
+      },
+      cancelLabel: {
+        zh: "取消",
+        en: "Cancel"
+      },
+      submitLabel: {
+        zh: "提交",
+        en: "Submit"
+      },
+      sendingLabel: {
+        zh: "提交中...",
+        en: "Sending..."
+      },
+      successMessage: {
+        zh: "已收到，谢谢。",
+        en: "Received. Thank you."
+      },
+      errorMessage: {
+        zh: "提交失败，请稍后再试。",
+        en: "Submission failed. Please try again."
+      },
+      closeLabel: {
+        zh: "关闭",
+        en: "Close"
+      }
     },
     meta: [
       {
@@ -336,11 +498,7 @@
             }
           },
           {
-            type: "p",
-            html: {
-              zh: "<strong><a href=\"https://wj.qq.com/s2/26818687/eae4/\" target=\"_blank\" rel=\"noopener\">通过表单报名</a></strong>",
-              en: "<strong><a href=\"https://wj.qq.com/s2/26818687/eae4/\" target=\"_blank\" rel=\"noopener\">Sign up via the form</a></strong>"
-            }
+            type: "signup"
           }
         ]
       },
@@ -705,7 +863,9 @@
   const buttons = document.querySelectorAll('.lang-toggle button');
   const app = document.getElementById('app');
   const brandTitle = document.getElementById('brand-title');
+  const signupDialog = document.getElementById('signup-dialog');
   const metaDescription = document.querySelector('meta[name="description"]');
+  let currentLang = 'zh';
 
   function text(value, lang) {
     return typeof value === 'string' ? value : value[lang];
@@ -750,6 +910,16 @@
       `;
     }
 
+    if (block.type === 'signup') {
+      return `
+        <p>
+          <button class="signup-button" type="button" data-open-signup>
+            ${text(content.signup.openLabel, lang)}
+          </button>
+        </p>
+      `;
+    }
+
     if (block.type === 'step') {
       return `
         <h3${idAttr(block.id)}>${text(block.title, lang)}</h3>
@@ -758,6 +928,39 @@
     }
 
     return '';
+  }
+
+  function renderSignupDialog(lang) {
+    signupDialog.innerHTML = `
+      <form class="signup-form" id="signup-form">
+        <div class="signup-head">
+          <h2>${text(content.signup.title, lang)}</h2>
+          <button class="signup-close" type="button" data-close-signup aria-label="${text(content.signup.closeLabel, lang)}">×</button>
+        </div>
+        <div class="signup-field">
+          <label for="signup-name">${text(content.signup.nameLabel, lang)}</label>
+          <input id="signup-name" name="name" type="text" autocomplete="name" maxlength="80" required />
+        </div>
+        <fieldset class="signup-options">
+          <legend>${text(content.signup.recordingLabel, lang)}</legend>
+          <div class="signup-radio-row">
+            <label><input name="hasRecording" type="radio" value="true" required /> ${text(content.signup.yesLabel, lang)}</label>
+            <label><input name="hasRecording" type="radio" value="false" required /> ${text(content.signup.noLabel, lang)}</label>
+          </div>
+        </fieldset>
+        <label class="honeypot">Website <input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+        <p class="signup-status" data-signup-status aria-live="polite"></p>
+        <div class="signup-actions">
+          <button type="button" data-close-signup>${text(content.signup.cancelLabel, lang)}</button>
+          <button type="submit">${text(content.signup.submitLabel, lang)}</button>
+        </div>
+      </form>
+    `;
+
+    signupDialog.querySelectorAll('[data-close-signup]').forEach(button => {
+      button.addEventListener('click', closeSignupDialog);
+    });
+    signupDialog.querySelector('#signup-form').addEventListener('submit', submitSignup);
   }
 
   function renderPage(lang) {
@@ -792,15 +995,90 @@
         <p>${text(content.footer.prefix, lang)} <a href="${content.footer.href}">${content.footer.label}</a></p>
       </footer>
     `;
+    renderSignupDialog(lang);
   }
 
   function setLang(lang) {
+    currentLang = lang;
     body.setAttribute('data-lang', lang);
     document.documentElement.setAttribute('lang', lang);
     buttons.forEach(button => button.classList.toggle('active', button.dataset.set === lang));
     renderPage(lang);
     try { localStorage.setItem('cyoc-lang', lang); } catch (e) {}
   }
+
+  function openSignupDialog() {
+    const form = signupDialog.querySelector('#signup-form');
+    const status = signupDialog.querySelector('[data-signup-status]');
+    if (form) form.reset();
+    if (status) {
+      status.textContent = '';
+      status.classList.remove('error');
+    }
+
+    if (typeof signupDialog.showModal === 'function') {
+      signupDialog.showModal();
+    } else {
+      signupDialog.setAttribute('open', '');
+    }
+    const nameInput = signupDialog.querySelector('#signup-name');
+    if (nameInput) nameInput.focus();
+  }
+
+  function closeSignupDialog() {
+    if (typeof signupDialog.close === 'function') {
+      signupDialog.close();
+    } else {
+      signupDialog.removeAttribute('open');
+    }
+  }
+
+  async function submitSignup(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const status = form.querySelector('[data-signup-status]');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const data = new FormData(form);
+    const payload = {
+      name: data.get('name'),
+      hasRecording: data.get('hasRecording') === 'true',
+      website: data.get('website') || ''
+    };
+
+    status.textContent = text(content.signup.sendingLabel, currentLang);
+    status.classList.remove('error');
+    submitButton.disabled = true;
+
+    try {
+      const response = await fetch(content.signup.apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error(`Signup failed: ${response.status}`);
+
+      form.reset();
+      status.textContent = text(content.signup.successMessage, currentLang);
+      window.setTimeout(closeSignupDialog, 1200);
+    } catch (error) {
+      status.textContent = text(content.signup.errorMessage, currentLang);
+      status.classList.add('error');
+    } finally {
+      submitButton.disabled = false;
+    }
+  }
+
+  app.addEventListener('click', event => {
+    const button = event.target.closest('[data-open-signup]');
+    if (!button) return;
+    openSignupDialog();
+  });
+
+  signupDialog.addEventListener('click', event => {
+    if (event.target === signupDialog) closeSignupDialog();
+  });
 
   buttons.forEach(button => button.addEventListener('click', () => setLang(button.dataset.set)));
 
