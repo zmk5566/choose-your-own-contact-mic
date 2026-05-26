@@ -218,15 +218,6 @@
   }
   .nav-strip a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
-  .doc-links {
-    margin-top: 60px;
-    padding-top: 24px;
-    border-top: 1px solid var(--rule);
-    font-size: 14px;
-    color: var(--muted);
-  }
-  .doc-links a { margin-right: 16px; }
-
   footer {
     margin-top: 80px;
     padding-top: 20px;
@@ -234,10 +225,6 @@
     font-size: 13px;
     color: var(--muted);
   }
-
-  /* language visibility */
-  body[data-lang="zh"] .en { display: none; }
-  body[data-lang="en"] .zh { display: none; }
 
   @media (max-width: 540px) {
     h1 { font-size: 30px; }
@@ -255,8 +242,7 @@
     <div class="row">
       <div class="brand">
         <span class="dot">●</span>
-        <span class="zh"> 选择你的接触式（麦克风）</span>
-        <span class="en"> Choose Your Own Contact (Microphone)</span>
+        <span id="brand-title"> 选择你的接触式（麦克风）</span>
       </div>
       <div class="lang-toggle" role="tablist" aria-label="Language">
         <button data-set="zh" class="active" type="button">中文</button>
@@ -266,303 +252,565 @@
   </div>
 </header>
 
-<main class="wrap">
-
-<!-- ========== 中文 ========== -->
-<section class="zh">
-
-  <h1>选择你的接触式（麦克风）<span class="sub">声音中的近距离接触 DIY 工作坊</span></h1>
-
-  <div class="meta">
-    <span><span class="pill">时长</span> 约 4 小时</span>
-    <span><span class="pill">人数</span> 10–15 人</span>
-    <span><span class="pill">门槛</span> 无需基础</span>
-  </div>
-
-  <figure class="hero-photo">
-    <img src="assets/1comp.jpg" alt="接触式麦克风" />
-  </figure>
-
-  <p class="lede">
-    从一片 piezo 开始，焊接、测试、封装，再用它录一段物体里的振动。
-  </p>
-
-  <nav class="nav-strip">
-    <a href="#idea">说明</a>
-    <a href="#do">我们会做什么</a>
-    <a href="#paths">三条路径</a>
-    <a href="#prompts">录音任务</a>
-    <a href="#take">你会带走什么</a>
-    <a href="#provide">材料 / 你需要带</a>
-    <a href="#info">实务</a>
-  </nav>
-
-  <h2 id="idea">工作坊说明</h2>
-  <p>
-    我们平时听到的大多是空气里的振动。物体内部也会传递振动，但不一定能通过空气被听见。<strong>接触式麦克风（Contact Microphone）</strong> 是一种贴在物体表面、直接拾取固体振动的传感器。
-  </p>
-  <p>
-    工作坊提供材料、电路和三条制作路径。每个人先完成基础款，再根据时间和兴趣选择是否继续做 PiP 或 P48 版本。
-  </p>
-  <p>最后用现场设备录音，并播放每个人选出的 60 秒素材。</p>
-
-  <h2 id="do">我们会一起做什么</h2>
-
-  <h3>1 · 听：参考作品与制作案例（约 25 分钟）</h3>
-  <p>开场会先看和听一组具体参考：</p>
-  <ul>
-    <li><a href="https://erstwhilerecords.bandcamp.com/album/extract-from-field-recording-archive"><strong>Toshiya Tsunoda: Extract From Field Recording Archive</strong></a>：用小型麦克风和接触式麦克风记录港口、路面、绳索等物理振动</li>
-    <li><a href="https://www.moma.org/interactives/exhibitions/2013/soundings/artists/6/works/"><strong>Jacob Kirkegaard: AION</strong></a>：在切尔诺贝利禁区的废弃空间里记录房间共振</li>
-    <li><a href="https://electricalwalks.org/electrical-walks/"><strong>Christina Kubisch: Electrical Walks</strong></a>：用感应耳机把城市里的电磁场转成可听声音</li>
-    <li><a href="https://www.instructables.com/The-Gladys-Hydrophone/"><strong>The Gladys Hydrophone</strong></a>：基于 piezo 和缓冲电路的 DIY 水听器制作案例</li>
-    <li><a href="https://knowledge.lom.audio/research/contact_mics"><strong>LOM: DIY contact microphones</strong></a>：接触式麦克风和前级 / buffer 的技术笔记</li>
-  </ul>
-  <p>听完这些，再做一个现场 A/B/C 演示：同一片 piezo 接三种电路，比较低频、噪声、供电和线缆长度带来的差异。</p>
-
-  <h3>2 · 学：电路原理（约 20 分钟）</h3>
-  <p>不需要电子工程背景。我们会用最直白的语言解释：</p>
-  <ul>
-    <li>piezo 是怎么"发电"的（压电效应）</li>
-    <li>为什么直接接设备会"丢低频"（高阻抗源 vs 低阻抗负载）</li>
-    <li>JFET buffer 怎么解决这个问题</li>
-    <li>PiP 与 P48 各自适用什么场景</li>
-    <li>为什么 PiP 用一根线就能同时走信号和供电</li>
-  </ul>
-
-  <h3>3 · 做：三条路径任选（约 60 分钟）</h3>
-  <p><strong>所有人先完成基础款</strong>，保证每个人结束时都带走一只能工作的麦克风。然后根据时间和兴趣继续。</p>
-
-  <div id="paths">
-    <div class="path-card">
-      <h4><span class="swatch green"></span> 基础款</h4>
-      <div class="meta-line">3.5mm TRS · 裸 piezo · 焊 3 个点 · 20–30 分钟</div>
-      <p>直接连手机、iRig 或相机即可使用。简单，但已经能听见很多东西。</p>
-    </div>
-    <div class="path-card">
-      <h4><span class="swatch yellow"></span> PiP 款</h4>
-      <div class="meta-line">3.5mm TRS · piezo + JFET buffer · 焊 1 块小板 · 45–60 分钟</div>
-      <p>低频保留更多。接 iRig、Zoom 录音机、相机（开 PiP），声音更稳定。</p>
-    </div>
-    <div class="path-card">
-      <h4><span class="swatch blue"></span> P48 款</h4>
-      <div class="meta-line">XLR · piezo + 平衡前级 · 60–75 分钟</div>
-      <p>更适合调音台或带 P48 的便携录音机，也适合较长线缆。</p>
-    </div>
-  </div>
-
-  <p><strong>外壳</strong>：我们提供 3D 打印的统一外壳，预留扩展腔可以容纳进阶电路板。<br />
-  <strong>封装</strong>：用 5 分钟快干环氧树脂直接灌进外壳里。3D 打印外壳本身就是模具，不脱模。工作坊结束就能拿走（完全固化要回家放一晚）。</p>
-
-  <h3 id="prompts">4 · 录：现场 + 外出录音（约 60 分钟）</h3>
-  <p>我们提供三个录音任务，三选一（不限于此，但任务可以在你不知道录什么的时候帮你起步）：</p>
-  <ul>
-    <li><strong>A. 三种材质</strong>：金属的、木质的、活的（身体 / 植物 / 水），各 20 秒</li>
-    <li><strong>B. 一个空间的三个尺度</strong>：墙、家具、小物件</li>
-    <li><strong>C. 一个不可见的振动</strong>：冰箱、水管、地板、窗户共振</li>
-  </ul>
-  <p>录音设备：iRig + 手机、Zoom 录音机、调音台（看你做的是哪一款），都在现场。</p>
-
-  <h3>5 · 分享：集体聆听会（约 30 分钟）</h3>
-  <p>用监听音箱播放，每人 60 秒。听完之后简短地说一下你录的是什么、为什么选它。</p>
-
-  <h2 id="take">你会带走什么</h2>
-  <ul>
-    <li>一只你自己做的接触式麦克风</li>
-    <li>一段现场录音</li>
-    <li>对固体振动、接触拾音和阻抗匹配的基本理解</li>
-    <li>一份基础电路知识，之后可以继续改电路或加效果</li>
-  </ul>
-
-  <h2 id="provide">我们提供什么 / 你需要带什么</h2>
-  <p><strong>我们提供</strong>：piezo（20mm / 27mm / 35mm 三种）、JFET buffer 板、P48 平衡前级板、3.5mm TRS 与 XLR 接头、屏蔽线、3D 打印外壳、5min 环氧、焊台、iRig、Zoom 录音机、小调音台、监听耳机和音箱。</p>
-  <p><strong>你需要带</strong>：你的手机或笔记本（用来听 / 存录音）。如果你有自己常用的录音机或便携设备，欢迎带来。</p>
-
-  <h2 id="info">实务信息</h2>
-  <ul>
-    <li><strong>时长</strong>：约 4 小时</li>
-    <li><strong>人数</strong>：10–15 人</li>
-    <li><strong>背景要求</strong>：无。声音艺术 / 电子基础有帮助但不必要</li>
-    <li><strong>安全提示</strong>：焊台是热的；<strong>不要把 PiP 麦插到 P48 接口</strong>（会烧 JFET）；P48 设备要先接线再开电、先关电再拔线</li>
-  </ul>
-
-</section>
-
-<!-- ========== English ========== -->
-<section class="en">
-
-  <h1>Choose Your Own Contact (Microphone)<span class="sub">A DIY workshop for close contacts in sound</span></h1>
-
-  <div class="meta">
-    <span><span class="pill">Duration</span> ~4 hrs</span>
-    <span><span class="pill">Capacity</span> 10–15</span>
-    <span><span class="pill">Prerequisites</span> none</span>
-  </div>
-
-  <figure class="hero-photo">
-    <img src="assets/4comp.jpg" alt="A contact microphone, Zoom recorder, and circuit board on a workbench" />
-  </figure>
-
-  <p class="lede">
-   <i>contact</i> (noun): The state or condition of touching; the mutual relation of two bodies whose external surfaces touch each other. Hence to be or come in (into) contact (Oxford English Dictionary).
-  </p>
-
-  <nav class="nav-strip">
-    <a href="#idea-en">Overview</a>
-    <a href="#info-en">Practical info</a>
-    <a href="#do-en">What we'll do</a>
-    <a href="#paths-en">Forking paths</a>
-    <a href="#prompts-en">Recording pointers</a>
-    <a href="#take-en">What you take home</a>
-    <a href="#provide-en">Materials</a>
-  </nav>
-
-  <h2 id="idea-en">Workshop Overview</h2>
-  <p>
-    Most of what we hear, what we call sound, arrives at us as variations of pressure in the air. Objects vibrate inside themselves too — most of the time, those vibrations don't make it through the air to our ears. In this workshop we will learn how to build and use different kinds of <strong>contact microphones</strong> that rely on close proximity to the source to pick up and amplify sounds that would otherwise remain hidden.
-  </p>
-  <p>
-    This is a <strong>choose-your-own-adventure</strong> workshop where you choose what kind of contact mic you want to build and what kinds of sounds you want to hear. We will come in contact with solid materials, plants, bodies of water and minuscule vibrations in the world around us.
-  </p>
-  <p>
-    We provide the materials, circuits, and branching build paths. Starting with the basic version, increasing complexity, and adjusting it based on your goals, equipment and perseverance. The applications may vary: field recording, sound design, installation, live performance, or just a curiosity towards your sonic environment -- all of these possibilities are open to the participants.
-  </p>
-  <p>The workshop will end with a short <strong>sound walk</strong> around the campus.</p>
-  <p><strong><a href="https://docs.google.com/forms/d/1zA1zwjaPBfOcOIHPiYBfAFCnYZ9Deln5Crh-sKNYGpI/edit" target="_blank">Sign up via the form</a></strong></p>
-
-    <h2 id="info-en">Practical Info</h2>
-  <ul>
-    <li><strong>Location</strong>: CMA Open Lab</li>
-    <li><strong>Time</strong>: May 30, Saturday, 2:00–7:00 PM</li>
-    <li><strong>Duration</strong>: ~4-5 hours</li>
-    <li><strong>Capacity</strong>: 10–15 people</li>
-    <li><strong>Prerequisites</strong>: none. Interest in sound (art or otherwise) will suffice but some knowledge of electronics might be useful</li>
-    <li><strong>Safety</strong>: don't rush, soldering irons are hot; <strong>never plug a PiP mic into a P48 input</strong>; for P48 devices, connect cables before powering on, and power off before disconnecting</li>
-  </ul>
-
-  <h2 id="do-en">What We'll Do Together</h2>
-
-  <h3>1 · Listen — Reference works (~20 min)</h3>
-  <p>We'll begin with a small set of references to the use of contact microphones in artistic practice:</p>
-  <ul>
-    <li><a href="https://erstwhilerecords.bandcamp.com/album/extract-from-field-recording-archive"><strong>Toshiya Tsunoda: Extract From Field Recording Archive</strong></a>: small microphones and contact microphones used to record physical vibrations in ports, pavement, ropes, and other surfaces</li>
-    <li><a href="https://www.moma.org/interactives/exhibitions/2013/soundings/artists/6/works/"><strong>Jacob Kirkegaard: AION</strong></a>: room resonance recorded in abandoned spaces inside the Chernobyl exclusion zone</li>
-    <li><a href="https://electricalwalks.org/electrical-walks/"><strong>Christina Kubisch: Electrical Walks</strong></a>: induction headphones used to make urban electromagnetic fields audible</li>
-    <li><a href="https://www.youtube.com/watch?v=N80rEmwxftM"><strong>Chris Watson: Planet Ocean</strong></a>: underwater soundscapes captured with hydrophones</li>
-    <li><a href="https://www.youtube.com/watch?v=PIqpqZEIa8g"><strong>Torturing Nurse: Live noise performance</strong></a>: live performance with contact microphones attached to metal objects</li>
-
-  </ul>
-  <p>Then a live A/B/C demonstration: the same piezo through three circuit paths, comparing low end, noise, power etc.</p>
-
-  <h3>2 · Learn — Basic principles (~30 min)</h3>
-  <p>No electronics background required. In plain language:</p>
-  <ul>
-    <li>How a piezo "generates" voltage (the piezoelectric effect)</li>
-    <li>How an inductor picks up magnetic fields </li>
-    <li>How to change resonant frequency of the piezo element</li>
-    <li>Why plugging it directly into a device drops the low end and how to fix it</li>
-    <li>What plug-in power (PiP) and phantom power (P48) are, and when each applies</li>
-    <li>How to make your microphone durable and adapt it to different environments</li>
-  </ul>
-
-  <h3>3 · Plan — Plan your adventure (10 min)</h3>
-  <p>Think about a map of your journey, what resources you have available, how you want to approach the recording, how much time you are willing to spend etc.</p>
-
-  <figure class="hero-photo">
-    <img src="assets/1comp.jpg" alt="different mics" />
-  </figure>
-
-  <h3>4 · Build — Make your contact microphone (~120-180 min)</h3>
-  <p><strong>Everyone completes the basic version first</strong> so no one leaves empty-handed. From there you can keep going based on time and curiosity.</p>
-
-  <div id="paths-en">
-    <div class="path-card">
-      <h4><span class="swatch green"></span> Basic</h4>
-      <div class="meta-line">3.5mm TRS · bare piezo/inductor · 3 solder joints · 20–30 min</div>
-      <p>Plug straight into a phone, iRig, or camera. Simple, noisy, but already enough to hear a lot.</p>
-    </div>
-    <div class="path-card">
-      <h4><span class="swatch yellow"></span> PiP</h4>
-      <div class="meta-line">3.5mm TRS · piezo + JFET buffer · 1 small board · 45–60 min</div>
-      <p>Keeps more low end. Plug into recorders with 3.5mm input, or a camera with PiP enabled.</p>
-    </div>
-    <div class="path-card">
-      <h4><span class="swatch blue"></span> P48</h4>
-      <div class="meta-line">XLR · piezo + balanced preamp · 60–75 min</div>
-      <p> For big XLR connections. Better for mixers, portable recorders with phantom power, and longer cable runs.</p>
-    </div>
-  </div>
-
-  <p><strong>Enclosure</strong>: a unified 3D-printed shell with a chamber for optional boards.<br />
-  <strong>Sealing</strong>: 5-minute epoxy/E6000/silicone sealant to make your microphone durable and/or watertight (might take some time depending on the material used).</p>
-
-  <h3 id="prompts-en">4 · Record — Campus sound walk (~60 min)</h3>
-  <p>We will walk around campus and record sounds using our contact microphones. Along the way we will learn how to attach our microphones to different objects with magnets, poster putty and clamps</p>
-  <p>Some optional pointers (you can ignore them, but they're there if you don't know where to start):</p>
-  <ul>
-    <li><strong>A. Three materials</strong>: metal, wood, something alive (your body, a plant, water)</li>
-    <li><strong>B. A space at three scales</strong>: a wall, a piece of furniture, a small object</li>
-    <li><strong>C. An invisible vibration</strong>: fridge, water pipe, floor, window resonance</li>
-    <li><strong>D. EM fields</strong>: vending machines, LED screens, your phone</li>
-  </ul>
-
-  <h3>5 · (Optional) Share — Collective listening session (~30 min)</h3>
-  <p>Share your sonic discoveries with others. A short word from each person on what they recorded and why.</p>
-
-    <figure class="hero-photo">
-    <img src="assets/2comp.jpg" alt="a bike" />
-  </figure>
-
-  <h2 id="take-en">What You'll Take Home</h2>
-  <ul>
-    <li>A contact microphone you made yourself</li>
-    <li>Some recordings</li>
-    <li>Some new technical knowledge</li>
-    <li>A working baseline of circuit knowledge for later modifications of your contact mic</li>
-  </ul>
-
-  <h2 id="provide-en">What We Provide / What to Bring</h2>
-  <p><strong>We provide</strong>: piezo discs of different sizes (20mm / 27mm / 35mm), JFET buffer boards for PiP builds, P48 balanced preamp boards for phantom power builds, 3.5mm TRS and XLR connectors, shielded cables, 3D-printed enclosures, various adhesives and sealants, soldering stations, recorders, a small mixer and speakers.</p>
-  <p><strong>You bring</strong>: your recorder (if you have one), SD card to use with the one we provide, and your phone or laptop for listening and storing recordings. If you have your own recorder or portable rig, bring it.</p>
-  <p> We will provide access to schematics, 3D models, and other resources</p>
-
-
-</section>
-<!--
-<div class="doc-links">
-  <span class="zh">技术文档：</span>
-  <span class="en">Workshop docs:</span>
-  <a href="workshop-plan.md">Workshop Plan</a>
-  <a href="bom.md">BOM</a>
-  <a href="budget.md">Budget</a>
-  <a href="enclosure-design.md">Enclosure Design</a>
-  <a href="cheat-sheet.md">Cheat Sheet</a>
-</div>
--->
-<footer>
-  <p>
-    <span class="zh">由参与者与讲师共同维护 · 源代码在 </span>
-    <span class="en">Maintained by participants and organizers · Source on </span>
-    <a href="https://github.com/zmk5566/choose-your-own-contact">GitHub</a>
-  </p>
-</footer>
-
-</main>
+<main class="wrap" id="app"></main>
 
 <script>
+  const content = {
+    title: {
+      zh: "选择你的接触式（麦克风）",
+      en: "Choose Your Own Contact (Microphone)"
+    },
+    subtitle: {
+      zh: "声音中的近距离接触 DIY 工作坊",
+      en: "A DIY workshop for close contacts in sound"
+    },
+    description: {
+      zh: "DIY 接触式麦克风工作坊",
+      en: "DIY contact microphone workshop"
+    },
+    meta: [
+      {
+        label: { zh: "时长", en: "Duration" },
+        value: { zh: "约 4 小时", en: "~4 hrs" }
+      },
+      {
+        label: { zh: "人数", en: "Capacity" },
+        value: { zh: "10–15 人", en: "10–15" }
+      },
+      {
+        label: { zh: "门槛", en: "Prerequisites" },
+        value: { zh: "无", en: "none" }
+      }
+    ],
+    hero: {
+      src: "assets/4comp.jpg",
+      alt: {
+        zh: "工作台上的接触式麦克风、Zoom 录音机和电路板",
+        en: "A contact microphone, Zoom recorder, and circuit board on a workbench"
+      }
+    },
+    lede: {
+      zh: "<i>contact</i>（名词）：触摸的状态或条件；两个物体的外表面相互接触时的关系。因此有 be or come in (into) contact（《牛津英语词典》）。",
+      en: "<i>contact</i> (noun): The state or condition of touching; the mutual relation of two bodies whose external surfaces touch each other. Hence to be or come in (into) contact (Oxford English Dictionary)."
+    },
+    nav: [
+      { id: "overview", label: { zh: "概览", en: "Overview" } },
+      { id: "info", label: { zh: "实务信息", en: "Practical info" } },
+      { id: "do", label: { zh: "我们会做什么", en: "What we'll do" } },
+      { id: "paths", label: { zh: "分岔路径", en: "Forking paths" } },
+      { id: "prompts", label: { zh: "录音指引", en: "Recording pointers" } },
+      { id: "take", label: { zh: "带走什么", en: "What you take home" } },
+      { id: "provide", label: { zh: "材料", en: "Materials" } }
+    ],
+    sections: [
+      {
+        id: "overview",
+        title: { zh: "工作坊概览", en: "Workshop Overview" },
+        blocks: [
+          {
+            type: "p",
+            html: {
+              zh: "我们听到的大多数东西，也就是我们称作声音的东西，是空气压力的变化。物体内部也会振动；多数时候，这些振动不会穿过空气到达我们的耳朵。在这次工作坊中，我们会学习如何制作和使用不同类型的 <strong>接触式麦克风</strong>，它们通过近距离接触声源来拾取并放大原本隐藏的声音。",
+              en: "Most of what we hear, what we call sound, arrives at us as variations of pressure in the air. Objects vibrate inside themselves too — most of the time, those vibrations don't make it through the air to our ears. In this workshop we will learn how to build and use different kinds of <strong>contact microphones</strong> that rely on close proximity to the source to pick up and amplify sounds that would otherwise remain hidden."
+            }
+          },
+          {
+            type: "p",
+            html: {
+              zh: "这是一个 <strong>choose-your-own-adventure</strong> 式的工作坊：你可以选择要制作哪一种接触式麦克风，也可以选择想听见哪些声音。我们会接触固体材料、植物、水体，以及身边世界中微小的振动。",
+              en: "This is a <strong>choose-your-own-adventure</strong> workshop where you choose what kind of contact mic you want to build and what kinds of sounds you want to hear. We will come in contact with solid materials, plants, bodies of water and minuscule vibrations in the world around us."
+            }
+          },
+          {
+            type: "p",
+            html: {
+              zh: "我们提供材料、电路和分岔制作路径。你会从基础版本开始，再根据自己的目标、设备和投入程度逐步增加复杂度并调整方向。应用场景可以是田野录音、声音设计、装置、现场演出，或只是出于对身边声音环境的好奇；这些可能性都向参与者开放。",
+              en: "We provide the materials, circuits, and branching build paths. Starting with the basic version, increasing complexity, and adjusting it based on your goals, equipment and perseverance. The applications may vary: field recording, sound design, installation, live performance, or just a curiosity towards your sonic environment -- all of these possibilities are open to the participants."
+            }
+          },
+          {
+            type: "p",
+            html: {
+              zh: "工作坊最后会在校园里进行一次简短的 <strong>声音漫步</strong>。",
+              en: "The workshop will end with a short <strong>sound walk</strong> around the campus."
+            }
+          },
+          {
+            type: "p",
+            html: {
+              zh: "<strong><a href=\"https://wj.qq.com/s2/26818687/eae4/\" target=\"_blank\" rel=\"noopener\">通过表单报名</a></strong>",
+              en: "<strong><a href=\"https://wj.qq.com/s2/26818687/eae4/\" target=\"_blank\" rel=\"noopener\">Sign up via the form</a></strong>"
+            }
+          }
+        ]
+      },
+      {
+        id: "info",
+        title: { zh: "实务信息", en: "Practical Info" },
+        blocks: [
+          {
+            type: "list",
+            items: [
+              {
+                zh: "<strong>地点</strong>: CMA Open Lab",
+                en: "<strong>Location</strong>: CMA Open Lab"
+              },
+              {
+                zh: "<strong>时间</strong>: 5 月 30 日，周六，2:00–7:00 PM",
+                en: "<strong>Time</strong>: May 30, Saturday, 2:00–7:00 PM"
+              },
+              {
+                zh: "<strong>时长</strong>: 约 4-5 小时",
+                en: "<strong>Duration</strong>: ~4-5 hours"
+              },
+              {
+                zh: "<strong>人数</strong>: 10–15 人",
+                en: "<strong>Capacity</strong>: 10–15 people"
+              },
+              {
+                zh: "<strong>门槛</strong>: 无。对声音（艺术或其他方向）的兴趣就够了；一些电子知识会有帮助",
+                en: "<strong>Prerequisites</strong>: none. Interest in sound (art or otherwise) will suffice but some knowledge of electronics might be useful"
+              },
+              {
+                zh: "<strong>安全</strong>: 不要赶，焊台很热；<strong>不要把 PiP 麦插到 P48 输入</strong>；P48 设备要先接线再开电，先关电再拔线",
+                en: "<strong>Safety</strong>: don't rush, soldering irons are hot; <strong>never plug a PiP mic into a P48 input</strong>; for P48 devices, connect cables before powering on, and power off before disconnecting"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "do",
+        title: { zh: "我们会一起做什么", en: "What We'll Do Together" },
+        blocks: [
+          {
+            type: "step",
+            title: {
+              zh: "1 · 听 — 参考作品（约 20 分钟）",
+              en: "1 · Listen — Reference works (~20 min)"
+            },
+            blocks: [
+              {
+                type: "p",
+                html: {
+                  zh: "我们会先从一小组接触式麦克风在艺术实践中的参考作品开始：",
+                  en: "We'll begin with a small set of references to the use of contact microphones in artistic practice:"
+                }
+              },
+              {
+                type: "list",
+                items: [
+                  {
+                    zh: "<a href=\"https://erstwhilerecords.bandcamp.com/album/extract-from-field-recording-archive\"><strong>Toshiya Tsunoda: Extract From Field Recording Archive</strong></a>：用小型麦克风和接触式麦克风记录港口、路面、绳索等表面的物理振动",
+                    en: "<a href=\"https://erstwhilerecords.bandcamp.com/album/extract-from-field-recording-archive\"><strong>Toshiya Tsunoda: Extract From Field Recording Archive</strong></a>: small microphones and contact microphones used to record physical vibrations in ports, pavement, ropes, and other surfaces"
+                  },
+                  {
+                    zh: "<a href=\"https://www.moma.org/interactives/exhibitions/2013/soundings/artists/6/works/\"><strong>Jacob Kirkegaard: AION</strong></a>：在切尔诺贝利禁区的废弃空间里记录房间共振",
+                    en: "<a href=\"https://www.moma.org/interactives/exhibitions/2013/soundings/artists/6/works/\"><strong>Jacob Kirkegaard: AION</strong></a>: room resonance recorded in abandoned spaces inside the Chernobyl exclusion zone"
+                  },
+                  {
+                    zh: "<a href=\"https://electricalwalks.org/electrical-walks/\"><strong>Christina Kubisch: Electrical Walks</strong></a>：用感应耳机把城市里的电磁场转成可听声音",
+                    en: "<a href=\"https://electricalwalks.org/electrical-walks/\"><strong>Christina Kubisch: Electrical Walks</strong></a>: induction headphones used to make urban electromagnetic fields audible"
+                  },
+                  {
+                    zh: "<a href=\"https://www.youtube.com/watch?v=N80rEmwxftM\"><strong>Chris Watson: Planet Ocean</strong></a>：用水听器捕捉水下声景",
+                    en: "<a href=\"https://www.youtube.com/watch?v=N80rEmwxftM\"><strong>Chris Watson: Planet Ocean</strong></a>: underwater soundscapes captured with hydrophones"
+                  },
+                  {
+                    zh: "<a href=\"https://www.youtube.com/watch?v=PIqpqZEIa8g\"><strong>Torturing Nurse: Live noise performance</strong></a>：把接触式麦克风贴在金属物体上的现场演出",
+                    en: "<a href=\"https://www.youtube.com/watch?v=PIqpqZEIa8g\"><strong>Torturing Nurse: Live noise performance</strong></a>: live performance with contact microphones attached to metal objects"
+                  }
+                ]
+              },
+              {
+                type: "p",
+                html: {
+                  zh: "然后做一个现场 A/B/C 演示：同一片 piezo 通过三条电路路径，比较低频、噪声、供电等差异。",
+                  en: "Then a live A/B/C demonstration: the same piezo through three circuit paths, comparing low end, noise, power etc."
+                }
+              }
+            ]
+          },
+          {
+            type: "step",
+            title: {
+              zh: "2 · 学 — 基本原理（约 30 分钟）",
+              en: "2 · Learn — Basic principles (~30 min)"
+            },
+            blocks: [
+              {
+                type: "p",
+                html: {
+                  zh: "不需要电子工程背景。我们会用直白的语言解释：",
+                  en: "No electronics background required. In plain language:"
+                }
+              },
+              {
+                type: "list",
+                items: [
+                  {
+                    zh: "piezo 如何“产生”电压（压电效应）",
+                    en: "How a piezo \"generates\" voltage (the piezoelectric effect)"
+                  },
+                  {
+                    zh: "电感如何拾取磁场",
+                    en: "How an inductor picks up magnetic fields"
+                  },
+                  {
+                    zh: "如何改变 piezo 元件的共振频率",
+                    en: "How to change resonant frequency of the piezo element"
+                  },
+                  {
+                    zh: "为什么直接接设备会丢低频，以及如何修正",
+                    en: "Why plugging it directly into a device drops the low end and how to fix it"
+                  },
+                  {
+                    zh: "plug-in power（PiP）和 phantom power（P48）是什么，以及各自适用的场景",
+                    en: "What plug-in power (PiP) and phantom power (P48) are, and when each applies"
+                  },
+                  {
+                    zh: "如何让你的麦克风更耐用，并适应不同环境",
+                    en: "How to make your microphone durable and adapt it to different environments"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: "step",
+            title: {
+              zh: "3 · 计划 — 规划你的路径（10 分钟）",
+              en: "3 · Plan — Plan your adventure (10 min)"
+            },
+            blocks: [
+              {
+                type: "p",
+                html: {
+                  zh: "想一想你的旅程地图：你有哪些资源，想怎样开始录音，愿意花多少时间等等。",
+                  en: "Think about a map of your journey, what resources you have available, how you want to approach the recording, how much time you are willing to spend etc."
+                }
+              },
+              {
+                type: "figure",
+                src: "assets/1comp.jpg",
+                alt: {
+                  zh: "不同的麦克风",
+                  en: "different mics"
+                }
+              }
+            ]
+          },
+          {
+            type: "step",
+            title: {
+              zh: "4 · 制作 — 制作你的接触式麦克风（约 120-180 分钟）",
+              en: "4 · Build — Make your contact microphone (~120-180 min)"
+            },
+            blocks: [
+              {
+                type: "p",
+                html: {
+                  zh: "<strong>所有人先完成基础款</strong>，这样没人会空手离开。之后可以根据时间和好奇心继续往下做。",
+                  en: "<strong>Everyone completes the basic version first</strong> so no one leaves empty-handed. From there you can keep going based on time and curiosity."
+                }
+              },
+              {
+                type: "paths",
+                id: "paths",
+                cards: [
+                  {
+                    color: "green",
+                    title: { zh: "基础款", en: "Basic" },
+                    meta: {
+                      zh: "3.5mm TRS · 裸 piezo/电感 · 3 个焊点 · 20–30 分钟",
+                      en: "3.5mm TRS · bare piezo/inductor · 3 solder joints · 20–30 min"
+                    },
+                    description: {
+                      zh: "可以直接接手机、iRig 或相机。简单、有噪声，但已经足够听到很多东西。",
+                      en: "Plug straight into a phone, iRig, or camera. Simple, noisy, but already enough to hear a lot."
+                    }
+                  },
+                  {
+                    color: "yellow",
+                    title: { zh: "PiP", en: "PiP" },
+                    meta: {
+                      zh: "3.5mm TRS · piezo + JFET buffer · 1 块小板 · 45–60 分钟",
+                      en: "3.5mm TRS · piezo + JFET buffer · 1 small board · 45–60 min"
+                    },
+                    description: {
+                      zh: "保留更多低频。接 3.5mm 输入的录音机，或开启 PiP 的相机。",
+                      en: "Keeps more low end. Plug into recorders with 3.5mm input, or a camera with PiP enabled."
+                    }
+                  },
+                  {
+                    color: "blue",
+                    title: { zh: "P48", en: "P48" },
+                    meta: {
+                      zh: "XLR · piezo + 平衡前级 · 60–75 分钟",
+                      en: "XLR · piezo + balanced preamp · 60–75 min"
+                    },
+                    description: {
+                      zh: "用于 XLR 连接。更适合调音台、带幻象电源的便携录音机，以及较长线缆。",
+                      en: "For big XLR connections. Better for mixers, portable recorders with phantom power, and longer cable runs."
+                    }
+                  }
+                ]
+              },
+              {
+                type: "p",
+                html: {
+                  zh: "<strong>外壳</strong>：统一的 3D 打印外壳，内部有可放置可选电路板的腔体。<br /><strong>封装</strong>：使用 5 分钟环氧 / E6000 / 硅胶密封剂，让麦克风更耐用，或在需要时防水（根据材料不同可能需要一些时间）。",
+                  en: "<strong>Enclosure</strong>: a unified 3D-printed shell with a chamber for optional boards.<br /><strong>Sealing</strong>: 5-minute epoxy/E6000/silicone sealant to make your microphone durable and/or watertight (might take some time depending on the material used)."
+                }
+              }
+            ]
+          },
+          {
+            type: "step",
+            id: "prompts",
+            title: {
+              zh: "5 · 录音 — 校园声音漫步（约 60 分钟）",
+              en: "5 · Record — Campus sound walk (~60 min)"
+            },
+            blocks: [
+              {
+                type: "p",
+                html: {
+                  zh: "我们会在校园中行走，并用自己的接触式麦克风录音。途中会学习如何用磁铁、蓝丁胶和夹子把麦克风固定到不同物体上。",
+                  en: "We will walk around campus and record sounds using our contact microphones. Along the way we will learn how to attach our microphones to different objects with magnets, poster putty and clamps."
+                }
+              },
+              {
+                type: "p",
+                html: {
+                  zh: "一些可选指引（可以忽略，但如果不知道从哪里开始，它们会有帮助）：",
+                  en: "Some optional pointers (you can ignore them, but they're there if you don't know where to start):"
+                }
+              },
+              {
+                type: "list",
+                items: [
+                  {
+                    zh: "<strong>A. 三种材质</strong>: 金属、木头、某种活物（你的身体、一株植物、水）",
+                    en: "<strong>A. Three materials</strong>: metal, wood, something alive (your body, a plant, water)"
+                  },
+                  {
+                    zh: "<strong>B. 一个空间的三个尺度</strong>: 一面墙、一件家具、一个小物件",
+                    en: "<strong>B. A space at three scales</strong>: a wall, a piece of furniture, a small object"
+                  },
+                  {
+                    zh: "<strong>C. 一个不可见的振动</strong>: 冰箱、水管、地板、窗户共振",
+                    en: "<strong>C. An invisible vibration</strong>: fridge, water pipe, floor, window resonance"
+                  },
+                  {
+                    zh: "<strong>D. 电磁场</strong>: 自动售货机、LED 屏幕、你的手机",
+                    en: "<strong>D. EM fields</strong>: vending machines, LED screens, your phone"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: "step",
+            title: {
+              zh: "6 ·（可选）分享 — 集体聆听会（约 30 分钟）",
+              en: "6 · (Optional) Share — Collective listening session (~30 min)"
+            },
+            blocks: [
+              {
+                type: "p",
+                html: {
+                  zh: "和其他人分享你的声音发现。每个人简短说一下自己录到了什么，以及为什么选择它。",
+                  en: "Share your sonic discoveries with others. A short word from each person on what they recorded and why."
+                }
+              },
+              {
+                type: "figure",
+                src: "assets/2comp.jpg",
+                alt: {
+                  zh: "自行车",
+                  en: "a bike"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "take",
+        title: { zh: "你会带走什么", en: "What You'll Take Home" },
+        blocks: [
+          {
+            type: "list",
+            items: [
+              {
+                zh: "一只你自己做的接触式麦克风",
+                en: "A contact microphone you made yourself"
+              },
+              {
+                zh: "一些录音",
+                en: "Some recordings"
+              },
+              {
+                zh: "一些新的技术知识",
+                en: "Some new technical knowledge"
+              },
+              {
+                zh: "一份可继续修改接触式麦克风的基础电路知识",
+                en: "A working baseline of circuit knowledge for later modifications of your contact mic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "provide",
+        title: { zh: "我们提供什么 / 你需要带什么", en: "What We Provide / What to Bring" },
+        blocks: [
+          {
+            type: "p",
+            html: {
+              zh: "<strong>我们提供</strong>：不同尺寸的 piezo 片（20mm / 27mm / 35mm）、PiP 版本用的 JFET buffer 板、phantom power 版本用的 P48 平衡前级板、3.5mm TRS 与 XLR 接头、屏蔽线、3D 打印外壳、各种胶和密封材料、焊台、录音机、小调音台和音箱。",
+              en: "<strong>We provide</strong>: piezo discs of different sizes (20mm / 27mm / 35mm), JFET buffer boards for PiP builds, P48 balanced preamp boards for phantom power builds, 3.5mm TRS and XLR connectors, shielded cables, 3D-printed enclosures, various adhesives and sealants, soldering stations, recorders, a small mixer and speakers."
+            }
+          },
+          {
+            type: "p",
+            html: {
+              zh: "<strong>你需要带</strong>：你的录音机（如果有）、一张用于我们现场录音机的 SD 卡，以及用于监听和保存录音的手机或笔记本。如果你有自己的录音机或便携录音设备，也请带来。",
+              en: "<strong>You bring</strong>: your recorder (if you have one), SD card to use with the one we provide, and your phone or laptop for listening and storing recordings. If you have your own recorder or portable rig, bring it."
+            }
+          },
+          {
+            type: "p",
+            html: {
+              zh: "我们会提供电路图、3D 模型和其他资源。",
+              en: "We will provide access to schematics, 3D models, and other resources."
+            }
+          }
+        ]
+      }
+    ],
+    footer: {
+      prefix: {
+        zh: "由参与者与组织者共同维护 · 源代码在",
+        en: "Maintained by participants and organizers · Source on"
+      },
+      href: "https://github.com/zmk5566/choose-your-own-contact",
+      label: "GitHub"
+    }
+  };
+
   const body = document.body;
   const buttons = document.querySelectorAll('.lang-toggle button');
-  function setLang(l) {
-    body.setAttribute('data-lang', l);
-    document.documentElement.setAttribute('lang', l);
-    buttons.forEach(b => b.classList.toggle('active', b.dataset.set === l));
-    try { localStorage.setItem('cyoc-lang', l); } catch (e) {}
+  const app = document.getElementById('app');
+  const brandTitle = document.getElementById('brand-title');
+  const metaDescription = document.querySelector('meta[name="description"]');
+
+  function text(value, lang) {
+    return typeof value === 'string' ? value : value[lang];
   }
-  buttons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.set)));
+
+  function idAttr(id) {
+    return id ? ` id="${id}"` : '';
+  }
+
+  function renderBlocks(blocks, lang) {
+    return blocks.map(block => renderBlock(block, lang)).join('');
+  }
+
+  function renderBlock(block, lang) {
+    if (block.type === 'p') {
+      return `<p>${text(block.html, lang)}</p>`;
+    }
+
+    if (block.type === 'list') {
+      return `<ul>${block.items.map(item => `<li>${text(item, lang)}</li>`).join('')}</ul>`;
+    }
+
+    if (block.type === 'figure') {
+      return `
+        <figure class="hero-photo">
+          <img src="${block.src}" alt="${text(block.alt, lang)}" />
+        </figure>
+      `;
+    }
+
+    if (block.type === 'paths') {
+      return `
+        <div${idAttr(block.id)}>
+          ${block.cards.map(card => `
+            <div class="path-card">
+              <h4><span class="swatch ${card.color}"></span> ${text(card.title, lang)}</h4>
+              <div class="meta-line">${text(card.meta, lang)}</div>
+              <p>${text(card.description, lang)}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    if (block.type === 'step') {
+      return `
+        <h3${idAttr(block.id)}>${text(block.title, lang)}</h3>
+        ${renderBlocks(block.blocks, lang)}
+      `;
+    }
+
+    return '';
+  }
+
+  function renderPage(lang) {
+    const title = text(content.title, lang);
+    const description = text(content.description, lang);
+
+    brandTitle.textContent = ` ${title}`;
+    document.title = title;
+    if (metaDescription) metaDescription.setAttribute('content', description);
+
+    app.innerHTML = `
+      <h1>${title}<span class="sub">${text(content.subtitle, lang)}</span></h1>
+      <div class="meta">
+        ${content.meta.map(item => `
+          <span><span class="pill">${text(item.label, lang)}</span> ${text(item.value, lang)}</span>
+        `).join('')}
+      </div>
+      <figure class="hero-photo">
+        <img src="${content.hero.src}" alt="${text(content.hero.alt, lang)}" />
+      </figure>
+      <p class="lede">${text(content.lede, lang)}</p>
+      <nav class="nav-strip">
+        ${content.nav.map(item => `<a href="#${item.id}">${text(item.label, lang)}</a>`).join('')}
+      </nav>
+      ${content.sections.map(section => `
+        <section>
+          <h2 id="${section.id}">${text(section.title, lang)}</h2>
+          ${renderBlocks(section.blocks, lang)}
+        </section>
+      `).join('')}
+      <footer>
+        <p>${text(content.footer.prefix, lang)} <a href="${content.footer.href}">${content.footer.label}</a></p>
+      </footer>
+    `;
+  }
+
+  function setLang(lang) {
+    body.setAttribute('data-lang', lang);
+    document.documentElement.setAttribute('lang', lang);
+    buttons.forEach(button => button.classList.toggle('active', button.dataset.set === lang));
+    renderPage(lang);
+    try { localStorage.setItem('cyoc-lang', lang); } catch (e) {}
+  }
+
+  buttons.forEach(button => button.addEventListener('click', () => setLang(button.dataset.set)));
+
+  let initialLang = 'zh';
   try {
     const saved = localStorage.getItem('cyoc-lang');
-    if (saved) setLang(saved);
-    else if ((navigator.language || '').toLowerCase().startsWith('en')) setLang('en');
+    if (saved === 'zh' || saved === 'en') initialLang = saved;
+    else if ((navigator.language || '').toLowerCase().startsWith('en')) initialLang = 'en';
   } catch (e) {}
+  setLang(initialLang);
 </script>
 
 </body>
