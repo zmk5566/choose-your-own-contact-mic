@@ -2,7 +2,7 @@
 
 DIY 接触式麦克风工作坊 / DIY contact microphone workshop.
 
-🔗 **Site**: https://zmk5566.github.io/choose-your-own-contact/
+🔗 **Site**: https://zmk5566.github.io/choose-your-own-contact-mic/
 
 ## Documents
 
